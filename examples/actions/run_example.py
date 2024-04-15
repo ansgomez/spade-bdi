@@ -1,13 +1,28 @@
-import argparse
 import asyncio
-import getpass
 
 import agentspeak
 import spade
 
 from spade_bdi.bdi import BDIAgent
 
+def strip_comments(line, delimiters=('#', ';')):
+    for delimiter in delimiters:
+        line = line.split(delimiter, 1)[0]
+    return line.strip()
 
+def read_config(filename):
+    config = {}
+    with open(filename, 'r') as file:
+        for line in file:
+            original_line = line.strip()
+            if not original_line or original_line[0] in ['#', ';']:
+                continue  # Skip comment lines and empty lines
+            line = strip_comments(original_line)
+            if '=' in line:
+                key, value = line.split('=', 1)
+                config[key.strip()] = value.strip()
+        return config
+    
 class MyCustomBDIAgent(BDIAgent):
     def add_custom_actions(self, actions):
         @actions.add_function(".my_function", (int,))
@@ -20,28 +35,18 @@ class MyCustomBDIAgent(BDIAgent):
             print(arg)
             yield
 
-
-async def main(server, password):
-    a = MyCustomBDIAgent(f"bdiagent@{server}", password, "actions.asl")
+async def main():
+    global server, passwd
+    a = MyCustomBDIAgent(server, passwd, "actions.asl")
 
     await a.start()
     await asyncio.sleep(2)
     await a.stop()
 
-
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--server", help="XMPP Server")
-    parser.add_argument("--password", help="Password")
-    args = parser.parse_args()
+    global server, passwd
+    config = read_config('../config.txt')
+    server = config['server']
+    passwd = config['passwd']
 
-    if args.server is None:
-        server = input("XMPP Server> ")
-    else:
-        server = args.server
-
-    if args.password is None:
-        passwd = getpass.getpass()
-    else:
-        passwd = args.password
-    spade.run(main(server, passwd))
+    spade.run(main())

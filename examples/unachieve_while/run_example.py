@@ -1,18 +1,34 @@
-import argparse
 import asyncio
-import getpass
+
 import spade
 
 from spade_bdi.bdi import BDIAgent
 
+def strip_comments(line, delimiters=('#', ';')):
+    for delimiter in delimiters:
+        line = line.split(delimiter, 1)[0]
+    return line.strip()
 
-async def main(server, password):
-    b = BDIAgent("receiver@{}".format(server), password, "receiver.asl")
-    b.bdi.set_belief("sender", "sender@{}".format(server))
+def read_config(filename):
+    config = {}
+    with open(filename, 'r') as file:
+        for line in file:
+            original_line = line.strip()
+            if not original_line or original_line[0] in ['#', ';']:
+                continue  # Skip comment lines and empty lines
+            line = strip_comments(original_line)
+            if '=' in line:
+                key, value = line.split('=', 1)
+                config[key.strip()] = value.strip()
+        return config
+
+async def main():
+    global serverSender, passwdSender, serverReceiver, passwdReceiver
+    b = BDIAgent(serverReceiver, passwdReceiver, "receiver.asl")
     await b.start()
 
-    a = BDIAgent("sender@{}".format(server), password, "sender.asl")
-    a.bdi.set_belief("receiver", "receiver@{}".format(server))
+    a = BDIAgent(serverSender, passwdSender, "sender.asl")
+    a.bdi.set_belief("receiver", serverReceiver)
     await a.start()
 
     await asyncio.sleep(5)
@@ -21,18 +37,10 @@ async def main(server, password):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--server", help="XMPP Server")
-    parser.add_argument("--password", help="Password")
-    args = parser.parse_args()
-
-    if args.server is None:
-        server = input("XMPP Server> ")
-    else:
-        server = args.server
-
-    if args.password is None:
-        passwd = getpass.getpass()
-    else:
-        passwd = args.password
-    spade.run(main(server, passwd))
+    global serverSender, passwdSender, serverReceiver, passwdReceiver
+    config = read_config('../config.txt')
+    serverSender = config['serverSender']
+    passwdSender = config['passwdSender']
+    serverReceiver = config['serverReceiver']
+    passwdReceiver = config['passwdReceiver']
+    spade.run(main())

@@ -1,0 +1,18 @@
+######### for single agent examples
+server=user@server
+passwd=pass
+
+######### for examples with sender and reciever
+serverSender=user@server
+passwdSender=pass
+
+serverReceiver=user@server
+passwdReceiver=pass
+
+######### for examples with a master and multiple slaves
+serverMaster=user@server
+passwdMaster=pass
+serverSlave1=user@server
+passwdSlave1=pass
+serverSlave2=user@server
+passwdSlave2=pass
