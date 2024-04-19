@@ -45,7 +45,8 @@ XMPP Server Configuration
 * Copy the `examples/config.example` file to `examples/config.txt`
 * Update the username and password for every account. 
 * A few examples only use a single agent, others use master/slave or sender/receiver
-* To create an XMPP account, use a [XMPP client](https://xmpp.org/software/) 
+* To create an XMPP account, use a `XMPP client <https://xmpp.org/software/>`_
+
 
 Examples
 --------
