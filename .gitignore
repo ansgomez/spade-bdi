@@ -105,3 +105,4 @@ examples/config.ignore
 
 # custom
 *.ignore
+examples/config.txt
