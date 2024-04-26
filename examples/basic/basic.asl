@@ -1,8 +1,10 @@
 !start.
 
 +!start <-
-    +car(rojo);
-    +truck(azul).
+    +car(red);
+    +truck(blue);
+    +car(yellow).
+
 
 +car(Color) 
- <- .print("El carro es ",Color).
+ <- .print("The car is: ",Color).

@@ -28,13 +28,9 @@ async def main():
 
     await a.start()
 
-    a.bdi.set_belief("moto", "amarillo")
-    a.bdi.set_belief("car", "azul")
-
     await asyncio.sleep(1)
     await a.stop()
 
-    a.bdi.remove_belief("truck", "azul")
     print(a.bdi.get_beliefs())
 
 if __name__ == "__main__":
