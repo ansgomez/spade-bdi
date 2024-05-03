@@ -31,6 +31,16 @@ Create hybrid agents with a BDI layer for the SPADE MAS Platform.
 * Documentation: https://spade-bdi.readthedocs.io. (to be completed)
 
 
+============================
+*XMPP Server Configuration*
+============================
+
+* Copy the `examples/config.example` file to `examples/config.txt`
+* Update the username and password for every account. 
+* A few examples only use a single agent, others use master/slave or sender/receiver
+* To create an XMPP account, use a `XMPP client <https://xmpp.org/software/>`_
+
+
 Features
 --------
 
@@ -38,14 +48,6 @@ Features
 * Supports Agentspeak-like BDI behaviours.
 * Add custom actions and functions.
 * Send TELL, UNTELL and ACHIEVE  KQML performatives.
-
-XMPP Server Configuration
---------
-
-* Copy the `examples/config.example` file to `examples/config.txt`
-* Update the username and password for every account. 
-* A few examples only use a single agent, others use master/slave or sender/receiver
-* To create an XMPP account, use a `XMPP client <https://xmpp.org/software/>`_
 
 
 Examples
